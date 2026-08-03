@@ -1,0 +1,6 @@
+id=fontchanger
+name=samsung font changer script
+version=1.0
+versionCode=1
+author=ctayl
+description=script is put in /system/bin. Allows to change font to any custom ttf in the command line.
