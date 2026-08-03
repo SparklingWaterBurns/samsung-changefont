@@ -1,0 +1,31 @@
+#!/system/bin/sh
+
+FONT_SRC="${1:-/storage/emulated/0}"
+FONT_DIR="/data/app_fonts/0/Samsungsans"
+SANS_LOC="/data/app_fonts/0/sans.loc"
+
+if [ ! -f "$FONT_SRC/DroidSans.ttf" ]; then
+    echo "Error: DroidSans.ttf not found in:"
+    echo "  $FONT_SRC"
+    exit 1
+fi
+
+# Create the directory
+mkdir /data/app_fonts/0/Samsungsans
+
+# Change the default font by updating sans.loc
+echo "/data/app_fonts/0/Samsungsans#Samsungsans" > "$SANS_LOC"
+
+# Wait for the system to process it
+sleep 3
+
+# Replace the font files
+cp -f "$FONT_SRC/DroidSans.ttf" "$FONT_DIR/DroidSans.ttf"
+cp -f "$FONT_SRC/DroidSans.ttf" "$FONT_DIR/DroidSans-Bold.ttf"
+
+# Restore permissions
+chmod 644 "$FONT_DIR/DroidSans.ttf" "$FONT_DIR/DroidSans-Bold.ttf"
+chown system:system "$FONT_DIR/DroidSans.ttf" "$FONT_DIR/DroidSans-Bold.ttf"
+
+# Restart SystemUI
+killall com.android.systemui
